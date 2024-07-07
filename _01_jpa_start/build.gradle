@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.3.10.Final'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.187'
+}
+
+test {
+    useJUnitPlatform()
+}
