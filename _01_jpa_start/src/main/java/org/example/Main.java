@@ -5,53 +5,47 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
-        //엔티티 매니저 팩토리 생성
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("seer");
-        EntityManager em = emf.createEntityManager(); //엔티티 매니저 생성
-
-        EntityTransaction tx = em.getTransaction(); //트랜잭션 기능 획득
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
 
         try {
-
-            tx.begin(); //트랜잭션 시작
-            logic(em);  //비즈니스 로직
-            tx.commit();//트랜잭션 커밋
+            tx.begin();
+            logic(em);
+            tx.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
-            tx.rollback(); //트랜잭션 롤백
+            tx.rollback();
         } finally {
-            em.close(); //엔티티 매니저 종료
+            em.close();
         }
 
-        emf.close(); //엔티티 매니저 팩토리 종료
+        emf.close();
     }
 
     public static void logic(EntityManager em) {
-
-        String id = "id1";
+        String id = "kyungsu";
         Member member = new Member();
         member.setId(id);
-        member.setUsername("시어");
-        member.setAge(2);
+        member.setUsername("경수");
+        member.setAge(28);
 
-        //등록
+        // INSERT
         em.persist(member);
 
-        //수정
+        // UPDATE
         member.setAge(20);
 
-        //한 건 조회
+        // SELECT ONE
         Member findMember = em.find(Member.class, id);
         System.out.println("findMember=" + findMember.getUsername() + ", age=" + findMember.getAge());
 
-        //목록 조회
+        // SELECT LIST
         List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
         System.out.println("members.size=" + members.size());
 
-        //삭제
+        // DELETE
         em.remove(member);
-
     }
 }
